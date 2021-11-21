@@ -61,6 +61,12 @@ const configCurrentWeather = (weather) => {
 };
 
 export const currentWeather = () => {
-    getCurrentPosition();
+    getCurrentPosition()
+        .then((data) => {
+            console.log(data);
+        })
+        .catch((err) => {
+            console.error(err);
+        });
     configCurrentWeather(weather);
 };

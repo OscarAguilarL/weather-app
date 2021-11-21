@@ -6,3 +6,7 @@ const DEFAULT_CONFIG = {
 
 export const formatDate = (date, config = DEFAULT_CONFIG) =>
     new Intl.DateTimeFormat('es', config).format(date);
+
+export const formatTemp = (value) => {
+    return `${Math.trunc(value)}°`;
+};

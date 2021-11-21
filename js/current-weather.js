@@ -1,6 +1,6 @@
 import weather from '../data/current-weather.js';
 import { WEATHER_CONDITION_CODES } from './constants.js';
-import { getCurrentPosition } from './geolocation.js';
+import { getLatLon } from './geolocation.js';
 import { formatDate, formatTemp } from './utils/format-data.js';
 
 const city = weather.name;
@@ -60,13 +60,10 @@ const configCurrentWeather = (weather) => {
     setBackground($app, conditionCode, solarStatus(sunsetTime, sunriseTime));
 };
 
-export const currentWeather = () => {
-    getCurrentPosition()
-        .then((data) => {
-            console.log(data);
-        })
-        .catch((err) => {
-            console.error(err);
-        });
+export const currentWeather = async () => {
+    const { lat, lon, error } = await getLatLon();
+
+    if (error) return console.error('Error:',error);
+
     configCurrentWeather(weather);
 };

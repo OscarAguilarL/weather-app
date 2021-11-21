@@ -1,7 +1,10 @@
 import weather from '../data/current-weather.js';
+import { WEATHER_CONDITION_CODES } from './constants.js';
 import { formatDate, formatTemp } from './utils/format-date.js';
 
-const { name: city } = weather;
+const city = weather.name;
+// WEATHER_CONDITION_CODES[]
+// String(weather.weather[0].id).charAt(0)
 
 const setCurrentCity = ($el, city) => {
     $el.textContent = city;
@@ -14,6 +17,23 @@ const setCurrentDate = ($el) => {
 
 const setCurrentTemp = ($el, temp) => {
     $el.textContent = formatTemp(temp);
+};
+
+const solarStatus = (sunsetTime, sunriseTime) => {
+    const currentHours = new Date().getHours();
+    const sunsetHours = sunsetTime.getHours();
+    const sunriseHours = sunriseTime.getHours();
+
+    if (currentHours > sunsetHours || currentHours < sunriseHours) {
+        return 'night';
+    } else {
+        return 'morning';
+    }
+};
+
+const setBackground = ($el, conditionCode, solarStatus) => {
+    const weatherType = WEATHER_CONDITION_CODES[conditionCode];
+    $el.style.backgroundImage = `url(./images/${solarStatus}-${weatherType}.jpg)`;
 };
 
 const configCurrentWeather = (weather) => {
@@ -29,6 +49,11 @@ const configCurrentWeather = (weather) => {
     const { temp } = weather.main;
     setCurrentTemp($currentWeatherTemp, temp);
     // background
+    const $app = document.querySelector('#app');
+    const sunriseTime = new Date(weather.sys.sunrise * 1000);
+    const sunsetTime = new Date(weather.sys.sunset * 1000);
+    const conditionCode = String(weather.weather[0].id).charAt(0);
+    setBackground($app, conditionCode, solarStatus(sunsetTime, sunriseTime));
 };
 
 export const currentWeather = () => {

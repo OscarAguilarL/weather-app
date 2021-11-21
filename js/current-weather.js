@@ -1,5 +1,6 @@
 import weather from '../data/current-weather.js';
 import { WEATHER_CONDITION_CODES } from './constants.js';
+import { getCurrentPosition } from './geolocation.js';
 import { formatDate, formatTemp } from './utils/format-data.js';
 
 const city = weather.name;
@@ -60,5 +61,6 @@ const configCurrentWeather = (weather) => {
 };
 
 export const currentWeather = () => {
+    getCurrentPosition();
     configCurrentWeather(weather);
 };

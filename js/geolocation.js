@@ -15,8 +15,8 @@ export const getCurrentPosition = (options = DEFAULT_OPTIONS) => {
             (position) => {
                 resolve(position);
             },
-            () => {
-                reject('No se ha podido obtener la ubicación');
+            (err) => {
+                reject(err);
             },
             options
         );

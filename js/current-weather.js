@@ -1,9 +1,10 @@
-import weather from '../data/current-weather.js';
+// import weather from '../data/current-weather.js';
 import { WEATHER_CONDITION_CODES } from './constants.js';
 import { getLatLon } from './geolocation.js';
+import { getCurrentWeather } from './services/weather.js';
 import { formatDate, formatTemp } from './utils/format-data.js';
 
-const city = weather.name;
+// const city = weather.name;
 // WEATHER_CONDITION_CODES[]
 // String(weather.weather[0].id).charAt(0)
 
@@ -47,7 +48,7 @@ const configCurrentWeather = (weather) => {
     setCurrentDate($currentWeatherDate);
     // city
     const $currentWeatherCity = document.querySelector('#current-weather-city');
-    setCurrentCity($currentWeatherCity, city);
+    setCurrentCity($currentWeatherCity, weather.name);
     // temp
     const $currentWeatherTemp = document.querySelector('#current-weather-temp');
     const { temp } = weather.main;
@@ -62,8 +63,10 @@ const configCurrentWeather = (weather) => {
 
 export const currentWeather = async () => {
     const { lat, lon, error } = await getLatLon();
+    const { error: cwError, data } = await getCurrentWeather(lat, lon);
 
-    if (error) return console.error('Error:',error);
+    if (error) return console.error('Error:', error);
+    if (cwError) return console.error('Error:', cwError);
 
-    configCurrentWeather(weather);
+    configCurrentWeather(data);
 };

@@ -22,5 +22,6 @@
 
 .tabList:not([hidden]) {
   display: flex;
+  justify-content: space-between;
 }
 

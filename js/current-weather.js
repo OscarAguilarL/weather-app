@@ -47,24 +47,24 @@ const showCurrentWeather = ($app, $loader) => {
 };
 
 const configCurrentWeather = (weather) => {
+    const { temp } = weather.main;
     const $app = document.querySelector('#app');
     const $loading = document.querySelector('#loading');
-    // loader
-    showCurrentWeather($app, $loading);
-    // date
-    const $currentWeatherDate = document.querySelector('#current-weather-date');
-    setCurrentDate($currentWeatherDate);
-    // city
     const $currentWeatherCity = document.querySelector('#current-weather-city');
-    setCurrentCity($currentWeatherCity, weather.name);
-    // temp
     const $currentWeatherTemp = document.querySelector('#current-weather-temp');
-    const { temp } = weather.main;
-    setCurrentTemp($currentWeatherTemp, temp);
-    // background
+    const $currentWeatherDate = document.querySelector('#current-weather-date');
     const sunriseTime = new Date(weather.sys.sunrise * 1000);
     const sunsetTime = new Date(weather.sys.sunset * 1000);
     const conditionCode = String(weather.weather[0].id).charAt(0);
+    // loader
+    showCurrentWeather($app, $loading);
+    // date
+    setCurrentDate($currentWeatherDate);
+    // city
+    setCurrentCity($currentWeatherCity, weather.name);
+    // temp
+    setCurrentTemp($currentWeatherTemp, temp);
+    // background
     setBackground($app, conditionCode, solarStatus(sunsetTime, sunriseTime));
 };
 

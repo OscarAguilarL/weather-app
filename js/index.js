@@ -1,5 +1,6 @@
 import { currentWeather } from './current-weather.js';
 import { viewPortSize } from './utils/viewport.js';
+import { weeklyWeather } from './weekly-weather.js';
 import './tabs.js';
 
 const $app = document.querySelector('#app');
@@ -9,3 +10,4 @@ viewPortSize($app);
 viewPortSize($loading);
 
 currentWeather();
+weeklyWeather();

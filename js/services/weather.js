@@ -19,3 +19,23 @@ export const getCurrentWeather = async (lat, lon) => {
         data,
     };
 };
+
+export const getWeeklyWeather = async (lat, lon) => {
+    const resp = await fetch(
+        `${BASE_API}/forecast?units=metric&lat=${lat}&lon=${lon}&appid=${API_KEY}`
+    );
+
+    if (!resp.ok) {
+        return {
+            error: resp.statusText,
+            data: null,
+        };
+    }
+
+    const data = await resp.json();
+
+    return {
+        error: null,
+        data,
+    };
+};

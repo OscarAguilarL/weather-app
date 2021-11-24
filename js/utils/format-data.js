@@ -13,3 +13,30 @@ export const formatDate = (date, config = DEFAULT_CONFIG) =>
 export const formatTemp = (value) => {
     return `${Math.trunc(value)}°`;
 };
+
+export const formatWeekList = (rawData) => {
+    const today = new Date();
+    const todayDay = today.getDay();
+    const weekList = [];
+    let day = todayDay;
+    let dayList = [];
+
+    rawData.forEach((item) => {
+        const itemDate = new Date(item.dt * 1000);
+        const itemDay = itemDate.getDay();
+        if (itemDay > day) {
+            weekList.push(dayList);
+            dayList = [];
+            day++;
+        }
+        if (itemDay === 0 && day === 6) {
+            weekList.push(dayList);
+            dayList = [];
+            day = 0;
+        }
+        dayList.push(item);
+    });
+
+    weekList.push(dayList);
+    return weekList;
+};

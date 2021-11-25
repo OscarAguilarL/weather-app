@@ -1,16 +1,14 @@
-const DEFAULT_CONFIG = {
-    open: false,
+const defaultConfig = {
+    open: true,
     debug: true,
     animatable: true,
 };
-
-export const draggable = ($element, config = DEFAULT_CONFIG) => {
+export function draggable($element, config = defaultConfig) {
     if (!($element instanceof HTMLElement)) {
         return console.warn(
-            `Elemento invalido, se esperaba un HTMLElement y se recibió: ${typeof $element}`
+            `Elemento invalido se esperaba un HTMLElement y se recibió ${$element}`
         );
     }
-
     let isOpen = config.open;
     let isDragging = false;
     const elementRect = $element.getBoundingClientRect();
@@ -21,35 +19,42 @@ export const draggable = ($element, config = DEFAULT_CONFIG) => {
     const VISIBLE_Y_POSITION = 0;
     const HIDDEN_Y_POSITION = ELEMENT_BLOCK_SIZE - MARKER_BLOCK_SIZE;
     let widgetPosition = VISIBLE_Y_POSITION;
-
-    $marker.addEventListener('click', handleClickClick);
+    isOpen ? open() : close();
+    let startY = 0;
+    $marker.addEventListener('click', handleClick);
     $marker.addEventListener('pointerdown', handlePointerDown);
     $marker.addEventListener('pointerup', handlePointerUp);
     $marker.addEventListener('pointerout', handlePointerOut);
     $marker.addEventListener('pointercancel', handlePointerCancel);
     $marker.addEventListener('pointermove', handlePointerMove);
 
-    function handlePointerDown() {
-        logger('Pointer DOWN');
+    function handlePointerUp() {
+        logger('Pointer UP');
     }
     function handlePointerOut() {
         logger('Pointer OUT');
     }
     function handlePointerCancel() {
-        logger('Pointer CANCEL');
+        logger('Pointer Cancel');
     }
-
-    function handlePointerUp() {
-        logger('Pointer UP');
+    function handlePointerDown(event) {
+        logger('Pointer Down');
+        startDrag(event);
     }
-
-    function handlePointerMove() {
-        logger('Pointer MOVE');
-    }
-
-    function handleClickClick(e) {
-        logger('click');
+    function handleClick(event) {
+        logger('CLICK');
         toggle();
+    }
+    function handlePointerMove(event) {
+        logger('Pointer MOVE');
+        drag(event);
+    }
+    function pageY(event) {
+        return event.pageY || event.touches[0].pageY;
+    }
+    function startDrag(event) {
+        isDragging = true;
+        startY = pageY(event);
     }
 
     function toggle() {
@@ -61,26 +66,36 @@ export const draggable = ($element, config = DEFAULT_CONFIG) => {
         }
     }
 
-    const logger = (message) => {
-        if (config.debug) console.info(message);
-    };
+    function logger(message) {
+        if (config.debug) {
+            console.info(message);
+        }
+    }
 
-    const setWidgetPosition = (value) => {
-        $element.style.marginBottom = `-${value}px`;
-    };
-
-    const open = () => {
-        logger('Abrir widget');
+    function open() {
+        logger('Abrir Widget');
         isOpen = true;
         widgetPosition = VISIBLE_Y_POSITION;
         setWidgetPosition(widgetPosition);
-    };
+    }
 
-    const close = () => {
-        logger('Cerrar widget');
+    function close() {
+        logger('Cerrar Widget');
         isOpen = false;
         widgetPosition = HIDDEN_Y_POSITION;
         setWidgetPosition(widgetPosition);
-    };
-    isOpen ? open() : close();
-};
+    }
+
+    function setWidgetPosition(value) {
+        $element.style.marginBottom = `-${value}px`;
+    }
+
+    function drag(event) {
+        const cursorY = pageY(event);
+        const movementY = cursorY - startY;
+        widgetPosition = widgetPosition + movementY;
+        logger(movementY);
+        startY = cursorY;
+        setWidgetPosition(widgetPosition);
+    }
+}

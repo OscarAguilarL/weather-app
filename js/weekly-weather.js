@@ -2,7 +2,7 @@ import { getWeeklyWeather } from './services/weather.js';
 import { getLatLon } from './geolocation.js';
 import { formatWeekList } from './utils/format-data.js';
 import { createDOM } from './utils/dom.js';
-import { createPeriodTime, periodTimeTemplate } from './period-time.js';
+import { createPeriodTime } from './period-time.js';
 
 const tabPanelTemplate = (id) => {
     return `
@@ -25,7 +25,6 @@ const createTabPanel = (index) => {
 };
 
 const configWeeklyWeather = (weekList) => {
-    // const $container = document.querySelector('.weeklyWeather');
     const $container = document.querySelector('.tabs');
     weekList.forEach((day, index) => {
         const $panel = createTabPanel(index);

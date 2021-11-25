@@ -5,7 +5,7 @@ export const periodTimeTemplate = ({ temp, date, icon, description }) => {
     return `
     <li class="dayWeather-item is-selected">
         <span class="dayWeather-time">${date}</span>
-        <img class="dayWeather-icon" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" rain="">
+        <img class="dayWeather-icon" width="48" height="48" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" rain="">
         <span class="dayWeather-temp">${temp}</span>
     </li>
     `;

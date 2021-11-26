@@ -1,6 +1,6 @@
 import { getWeeklyWeather } from './services/weather.js';
 import { getLatLon } from './geolocation.js';
-import { formatWeekList } from './utils/format-data.js';
+import { formatTemp, formatWeekList } from './utils/format-data.js';
 import { createDOM } from './utils/dom.js';
 import { createPeriodTime } from './period-time.js';
 import { draggable } from './draggable.js';
@@ -59,8 +59,8 @@ const configWeeklyWeather = (weekList) => {
         event.currentTarget.classList.add('is-selected');
 
         $showDataFeatures.innerHTML = `
-            <p class="weather-max">Max: <strong>${temp_max}°</strong></p>
-            <p class="weather-min">Min: <strong>${temp_min}°</strong></p>
+            <p class="weather-max">Max: <strong>${formatTemp(temp_max)}</strong></p>
+            <p class="weather-min">Min: <strong>${formatTemp(temp_min)}</strong></p>
             <p class="weather-wind">Viento: <strong>${speed} km/h</strong></p>
             <p class="weather-humidity">Humedad: <strong>${humidity}%</strong></p>
         `;

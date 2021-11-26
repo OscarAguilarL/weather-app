@@ -27,15 +27,44 @@ const createTabPanel = (index) => {
 
 const configWeeklyWeather = (weekList) => {
     const $container = document.querySelector('.tabs');
+    const extraWeatherInfo = [];
+    let infoIndex = 0;
+
     weekList.forEach((day, index) => {
         const $panel = createTabPanel(index);
         $container.append($panel);
         day.forEach((weather, indexWeather) => {
+            extraWeatherInfo.push(weather);
+
             $panel
                 .querySelector('.dayWeather-list')
-                .append(createPeriodTime(weather));
+                .append(createPeriodTime(weather, infoIndex));
+            const dayList = document.querySelectorAll('.dayWeather-item');
+            dayList.forEach((element) => {
+                element.addEventListener('click', getWeatherTabs);
+            });
+            infoIndex++;
         });
     });
+
+    function getWeatherTabs(event) {
+        const dayList = document.querySelectorAll('.dayWeather-item');
+        const {
+            wind: { speed },
+            main: { humidity, temp_max, temp_min },
+        } = extraWeatherInfo[event.currentTarget.dataset.id];
+        const $showDataFeatures = document.querySelector('.weather-features');
+
+        dayList.forEach((item) => item.classList.remove('is-selected'));
+        event.currentTarget.classList.add('is-selected');
+
+        $showDataFeatures.innerHTML = `
+            <p class="weather-max">Max: <strong>${temp_max}°</strong></p>
+            <p class="weather-min">Min: <strong>${temp_min}°</strong></p>
+            <p class="weather-wind">Viento: <strong>${speed} km/h</strong></p>
+            <p class="weather-humidity">Humedad: <strong>${humidity}%</strong></p>
+        `;
+    }
 };
 
 export const weeklyWeather = async () => {

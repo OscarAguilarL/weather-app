@@ -1,17 +1,23 @@
 import { createDOM } from './utils/dom.js';
 import { formatDate, formatTemp } from './utils/format-data.js';
 
-export const periodTimeTemplate = ({ temp, date, icon, description }) => {
+export const periodTimeTemplate = ({
+    temp,
+    date,
+    icon,
+    description,
+    index,
+}) => {
     return `
-    <li class="dayWeather-item is-selected">
-        <span class="dayWeather-time">${date}</span>
+    <li class="dayWeather-item" data-id="${index}">
+        <span class="dayWeather-time is-selected">${date}</span>
         <img class="dayWeather-icon" width="48" height="48" src="https://openweathermap.org/img/wn/${icon}@2x.png" alt="${description}" rain="">
         <span class="dayWeather-temp">${temp}</span>
     </li>
     `;
 };
 
-export const createPeriodTime = (weather) => {
+export const createPeriodTime = (weather, index) => {
     const dateConfig = {
         hour: 'numeric',
         hour12: true,
@@ -23,6 +29,7 @@ export const createPeriodTime = (weather) => {
         date,
         icon: weather.weather[0].icon,
         description: weather.weather[0].icon,
+        index,
     };
     return createDOM(periodTimeTemplate(config));
 };

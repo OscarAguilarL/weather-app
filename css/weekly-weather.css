@@ -7,6 +7,14 @@
   touch-action: none;
 }
 
+.weather-features {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: start;
+  padding: 0 1rem;
+  color: var(--white);
+}
+
 .weeklyWeather.is-active {
   transition: .2s transform;
   transform: translateY(0);
